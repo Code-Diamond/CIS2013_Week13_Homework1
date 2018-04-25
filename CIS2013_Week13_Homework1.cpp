@@ -61,18 +61,22 @@ class BankAccount
 			system("pause");
 		}
 		
-		void depositMoney(int amount)
+		void depositMoney()
 		{
 			system("CLS");
 			cout << "\n\n\n		How much would you like to deposit?	\n";
-			cout << "\n\n\n			-regular		\n";
+			int amount;
+			cin >> amount;
+			balance += amount;
 		}
 
-		int withdrawMoney(int amount)
+		void withdrawMoney()
 		{
 			system("CLS");
 			cout << "\n\n\n		How much would you like to withdraw?	\n";
-			cout << "\n\n\n			-regular		\n";
+			int amount;
+			cin >> amount;
+			balance -+ amount;
 		}
 		void displayAccountInformation()
 		{
@@ -96,6 +100,7 @@ public:
 		string inputName;
 		long long inputPhone;
 		long long inputBalance;
+		rate = 1;
 		cout << "Please enter your account's name: ", cin >> inputName;
 		name = inputName;
 		cout << "Please enter your account's phone: ", cin >> inputPhone;
@@ -108,6 +113,7 @@ public:
 		accountType = "Regular";
 		displayAccountInformation();
 	}
+
 };
 class Savings: public BankAccount
 {
@@ -124,13 +130,23 @@ class Savings: public BankAccount
 			name = inputName;
 			cout << "Please enter your account's phone: ", cin >> inputPhone;
 			phone = inputPhone;
-			cout << "Please enter your account's balance: ", cin >> inputBalance;
-			balance = inputBalance;
+			balance = 0;
+			while(balance < minimumBalance)
+			{
+				cout << "Please enter your account's balance: ", cin >> inputBalance;
+				balance = inputBalance;
+				if(balance < minimumBalance)
+				{
+					cout << "A minimum balance of $1000 is required to open this account.\n";
+				}
+			}
+			
 			accountType = "Savings";
 			cout << "Bank account made!\n\n";
 			acctNumber = i;
 			displayAccountInformation();
 		}
+
 };
 
 class Checking: public BankAccount
@@ -157,7 +173,7 @@ class Checking: public BankAccount
 			acctNumber = i;
 			displayAccountInformation();
 		}
-		
+	
 };
 
 
@@ -228,18 +244,14 @@ void MainMenuLogic(string decision)
 
 		string accountDecision = AccountMenu();
 
-
 		if(accountDecision == "d")
 		{
-			accounts[inputAcctNumber]->withdrawMoney(1);
+			accounts[inputAcctNumber]->depositMoney();
 		}
 		else if(accountDecision == "w")
 		{
-			accounts[inputAcctNumber]->depositMoney(2);
+			accounts[inputAcctNumber]->withdrawMoney();
 		}
-
-
-		
 	}
 	else
 	{
@@ -267,6 +279,9 @@ string AccountMenu()
 	cout << "\n\n		What would you like to do?		\n";
 	cout << "\n			-deposit money		(d)\n";
 	cout << "\n			-withdraw money		(w)\n";
+	string decision;
+	cin >> decision;
+	return decision;
 }
 
 string PrintNewAccountMenu()
