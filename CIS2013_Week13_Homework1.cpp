@@ -13,7 +13,10 @@ class BankAccount
 		long long balance;
 		int rate;
 		string accountType;
+		int overdraftFee = 50;
 
+		int minimumBalance = 1000;
+		int withdrawLimit = 800;
 		string getName()
 		{
 			return name;
@@ -76,7 +79,38 @@ class BankAccount
 			cout << "\n\n\n		How much would you like to withdraw?	\n";
 			int amount;
 			cin >> amount;
-			balance -= amount;
+			if(accountType == "Savings")
+			{
+				if((balance - amount) < minimumBalance)
+				{
+					cout << "Warning! You will get a min balance fee unless you deposit enough to have $1000 before settlement.\n";
+					balance -= amount;
+					system("pause");
+				}
+				else if(amount > withdrawLimit)
+				{
+					cout << "You cannot withdraw that much, $800 is the maximum withdrawal in a day. . . Returning to the main menu.\n";
+					system("pause");
+				}
+				else
+				{
+					balance -= amount;
+				}
+			}
+			else if(accountType == "Checking")
+			{
+				balance -= amount;
+				if(balance < 0)
+				{
+					balance -= overdraftFee;
+				}
+			}
+			else
+			{
+				balance -= amount;	
+			}
+
+			
 		}
 		void displayAccountInformation()
 		{
@@ -103,7 +137,7 @@ public:
 		rate = 1;
 		cout << "Please enter your account's name: ", cin >> inputName;
 		name = inputName;
-		cout << "Please enter your account's phone: ", cin >> inputPhone;
+		cout << "Please enter your account's phone (No dashes): ", cin >> inputPhone;
 		phone = inputPhone;
 		cout << "Please enter your account's balance: ", cin >> inputBalance;
 		balance = inputBalance;
@@ -118,8 +152,7 @@ public:
 class Savings: public BankAccount
 {
 	public:
-		int minimumBalance = 1000;
-		int withdrawLimit = 800;
+
 
 		Savings(int i)
 		{
@@ -129,7 +162,7 @@ class Savings: public BankAccount
 			long long inputBalance;
 			cout << "Please enter your account's name: ", cin >> inputName;
 			name = inputName;
-			cout << "Please enter your account's phone: ", cin >> inputPhone;
+			cout << "Please enter your account's phone (No dashes): ", cin >> inputPhone;
 			phone = inputPhone;
 			balance = 0;
 			rate = 2;
@@ -149,42 +182,18 @@ class Savings: public BankAccount
 			displayAccountInformation();
 		}
 
-		void withdrawMoney()
-		{
-			system("CLS");
-			cout << "\n\n\n		How much would you like to withdraw?	\n";
-			int amount;
-			cin >> amount;
-			if((balance - amount) < minimumBalance)
-			{
-				cout << "Warning! You will get a min balance fee unless you deposit enough to have $1000 before settlement.\n";
-				balance -= amount;
-				system("pause");
-			}
-			else if(amount > withdrawLimit)
-			{
-				cout << "You cannot withdraw that much, $800 is the maximum withdrawal in a day. . . Returning to the main menu.\n";
-				system("pause");
-			}
-			else
-			{
-				balance -= amount;
-			}
-			
-		}
 };
 
 class Checking: public BankAccount
 {
 	public:
-		int overdraftFee = 50;
-		int minimumBalance = 0;
 		Checking(int i)
 		{
 			system("CLS");
 			string inputName;
 			long long inputPhone;
 			long long inputBalance;
+			rate = 1;
 			cout << "Please enter your account's name: ", cin >> inputName;
 			name = inputName;
 			cout << "Please enter your account's phone (No dashes): ", cin >> inputPhone;
@@ -196,18 +205,6 @@ class Checking: public BankAccount
 			accountType = "Checking";
 			acctNumber = i;
 			displayAccountInformation();
-		}
-		void withdrawMoney()
-		{
-			system("CLS");
-			cout << "\n\n\n		How much would you like to withdraw?	\n";
-			int amount;
-			cin >> amount;
-			balance -= amount;
-			if(balance < 0)
-			{
-				balance -= overdraftFee;
-			}
 		}
 };
 
