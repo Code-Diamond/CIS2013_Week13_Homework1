@@ -223,6 +223,7 @@ void MainMenuLogic(string);
 BankAccount *accounts[100];
 
 int numberOfAccounts = 1;
+bool accountCreated = false;
 
 int main()
 {
@@ -254,16 +255,19 @@ void MainMenuLogic(string decision)
 		{
 			accounts[numberOfAccounts] = new Regular(numberOfAccounts);
 			numberOfAccounts++;
+			accountCreated = true;
 		}
 		else if(newAccountDecision == "s" || newAccountDecision == "S")
 		{
 			accounts[numberOfAccounts] = new Savings(numberOfAccounts);
 			numberOfAccounts++;
+			accountCreated = true;
 		}
 		else if(newAccountDecision == "c" || newAccountDecision == "C")
 		{
 			accounts[numberOfAccounts] = new Checking(numberOfAccounts);
 			numberOfAccounts++;			
+			accountCreated = true;
 		}
 	}
 	else if(decision == "C" || decision == "c")
@@ -272,23 +276,34 @@ void MainMenuLogic(string decision)
 		int inputAcctNumber;
 		cout << "Please enter the account number: ";
 		cin >> inputAcctNumber;
-		accounts[inputAcctNumber]->displayAccountInformation();
-
-		string accountDecision = AccountMenu();
-
-		if(accountDecision == "d")
+		if(inputAcctNumber <= numberOfAccounts && inputAcctNumber > 0 && accountCreated == true)
 		{
-			accounts[inputAcctNumber]->depositMoney();
-		}
-		else if(accountDecision == "w")
-		{
-			accounts[inputAcctNumber]->withdrawMoney();
+			accounts[inputAcctNumber]->displayAccountInformation();	
+
+			string accountDecision = AccountMenu();
+
+			if(accountDecision == "d")
+			{
+				accounts[inputAcctNumber]->depositMoney();
+			}
+			else if(accountDecision == "w")
+			{
+				accounts[inputAcctNumber]->withdrawMoney();
+			}
+			else
+			{
+				cout << "Returning to main menu.\n";
+				system("pause");
+			}
 		}
 		else
 		{
-			cout << "Returning to main menu.\n";
+			decision == "Z";
+			cout << "You must first create an account.\n";
 			system("pause");
 		}
+		
+
 	}
 	else
 	{
