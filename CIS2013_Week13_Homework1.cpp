@@ -284,6 +284,11 @@ void MainMenuLogic(string decision)
 		{
 			accounts[inputAcctNumber]->withdrawMoney();
 		}
+		else
+		{
+			cout << "Returning to main menu.\n";
+			system("pause");
+		}
 	}
 	else
 	{
