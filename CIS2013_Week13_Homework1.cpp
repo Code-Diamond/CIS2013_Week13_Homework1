@@ -163,7 +163,7 @@ class Savings: public BankAccount
 			}
 			else if(amount > withdrawLimit)
 			{
-				cout << "You cannot withdraw that much, $800 is the maximum withdrawal in a day. . . Returning to the main menu.\n"
+				cout << "You cannot withdraw that much, $800 is the maximum withdrawal in a day. . . Returning to the main menu.\n";
 				system("pause");
 			}
 			else
